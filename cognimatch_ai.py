@@ -191,29 +191,83 @@ def match_score():
 
 def persona_generator():
     print("\n=== Neurodivergent Candidate Persona Generator ===\n")
-    print("Answer these questions:\n")
     name = input("Your name (or anonymous): ")
-    q1 = input("1. How do you work best? ")
-    q2 = input("2. What environment helps you focus? ")
-    q3 = input("3. What are your biggest strengths? ")
-    q4 = input("4. What challenges do you face at work? ")
-    q5 = input("5. What accommodations help you most? ")
+
+    def choose(question, options):
+        print(f"\n{question}")
+        for i, opt in enumerate(options, 1):
+            print(f"   {i}. {opt}")
+        while True:
+            try:
+                choice = int(input("Choose (enter number): "))
+                if 1 <= choice <= len(options):
+                    return options[choice - 1]
+                else:
+                    print(f"Please enter a number between 1 and {len(options)}")
+            except ValueError:
+                print("Please enter a valid number")
+
+    q1 = choose("How do you work best?", [
+        "Alone with deep focus",
+        "Small team of 2-3 people",
+        "Large collaborative team",
+        "Mix of solo and team work"
+    ])
+
+    q2 = choose("What environment helps you focus?", [
+        "Quiet private space",
+        "Background noise/music",
+        "Busy open office",
+        "Work from home"
+    ])
+
+    q3 = choose("What is your biggest strength?", [
+        "Deep focus and attention to detail",
+        "Creative and outside-the-box thinking",
+        "Pattern recognition and analysis",
+        "Hyperfocus on topics I'm passionate about",
+        "Systematic and process-oriented thinking"
+    ])
+
+    q4 = choose("What is your biggest challenge at work?", [
+        "Sensory overload in loud environments",
+        "Back-to-back meetings with no breaks",
+        "Unclear or changing instructions",
+        "Open-ended tasks with no structure",
+        "Social communication and small talk"
+    ])
+
+    q5 = choose("What accommodation helps you most?", [
+        "Written instructions instead of verbal",
+        "Flexible work hours",
+        "Quiet workspace or noise-cancelling headphones",
+        "Clear deadlines and structured tasks",
+        "Remote or hybrid work option"
+    ])
+
+    q6 = choose("What type of role suits you best?", [
+        "Technical / engineering / coding",
+        "Research and analysis",
+        "Creative / design / writing",
+        "Data and systems",
+        "Problem solving and strategy"
+    ])
 
     response = client.chat.completions.create(
         model="llama-3.3-70b-versatile",
         messages=[{
             "role": "user",
             "content": f"""
-            Based on these answers, generate a professional neurodivergent 
-            candidate persona profile that this person can share with employers.
-            
-            Answers: 
+            Based on these answers, generate a professional neurodivergent
+            candidate persona profile to share with employers.
+
             Works best: {q1}
             Environment: {q2}
-            Strengths: {q3}
-            Challenges: {q4}
-            Accommodations: {q5}
-            
+            Strength: {q3}
+            Challenge: {q4}
+            Accommodation: {q5}
+            Role type: {q6}
+
             Return ONLY a JSON object:
             {{
                 "persona_name": "professional label for their work style",
