@@ -17,28 +17,56 @@ def save_output(feature_name, data):
 def culture_report():
     print("\n=== Culture Intelligence Report ===\n")
     company = input("Describe the company: ")
-    
+
     response = client.chat.completions.create(
         model="llama-3.3-70b-versatile",
         messages=[{
             "role": "user",
             "content": f"""
             You are an inclusion expert. Based on this company: {company}
-            Generate a Culture Intelligence Report with:
-            1. Inclusion Score (out of 100)
-            2. Top 3 strengths for neurodivergent employees
-            3. Top 3 gaps
-            4. Recommendations for improvement
-            Return as plain text.
+            Return ONLY a JSON object with exactly this structure, no extra text:
+            {{
+                "inclusion_score": 0,
+                "score_explanation": "explanation here",
+                "strengths": [
+                    {{"point": "strength 1", "detail": "explanation"}},
+                    {{"point": "strength 2", "detail": "explanation"}},
+                    {{"point": "strength 3", "detail": "explanation"}}
+                ],
+                "gaps": [
+                    {{"point": "gap 1", "detail": "explanation"}},
+                    {{"point": "gap 2", "detail": "explanation"}},
+                    {{"point": "gap 3", "detail": "explanation"}}
+                ],
+                "recommendations": [
+                    "recommendation 1",
+                    "recommendation 2",
+                    "recommendation 3"
+                ]
+            }}
             """
         }]
     )
-    
-    result = response.choices[0].message.content
-    print("\n" + result)
+
+    raw = response.choices[0].message.content
+    clean = raw.replace("```json", "").replace("```", "").strip()
+    data = json.loads(clean)
+
+    print(f"\n📊 INCLUSION SCORE: {data['inclusion_score']}/100")
+    print(f"   {data['score_explanation']}\n")
+    print("✅ STRENGTHS:")
+    for s in data['strengths']:
+        print(f"   • {s['point']}: {s['detail']}")
+    print("\n⚠️  GAPS:")
+    for g in data['gaps']:
+        print(f"   • {g['point']}: {g['detail']}")
+    print("\n💡 RECOMMENDATIONS:")
+    for r in data['recommendations']:
+        print(f"   • {r}")
+
     save_output("culture_report", {
         "company_description": company,
-        "report": result,
+        "report": data,
         "timestamp": str(datetime.now())
     })
 
@@ -58,25 +86,36 @@ def bias_scanner():
         messages=[{
             "role": "user",
             "content": f"""
-            You are an inclusive hiring expert. Analyze this job description 
-            for language that may exclude neurodivergent candidates.
-            
+            You are an inclusive hiring expert. Analyze this job description
+            for language that excludes neurodivergent candidates.
             Job Description: {job_description}
-            
-            Provide:
-            1. BIAS SCORE (0-100, where 100 = very inclusive)
-            2. FLAGGED WORDS/PHRASES with explanation
-            3. SUGGESTED REPLACEMENTS
-            4. REWRITTEN inclusive JD
+            Return ONLY a JSON object with exactly this structure, no extra text:
+            {{
+                "bias_score": 0,
+                "flagged_phrases": [
+                    {{"phrase": "word", "reason": "why exclusionary", "replacement": "better alternative"}}
+                ],
+                "rewritten_jd": "full rewritten inclusive version"
+            }}
             """
         }]
     )
-    
-    result = response.choices[0].message.content
-    print("\n" + result)
+
+    raw = response.choices[0].message.content
+    clean = raw.replace("```json", "").replace("```", "").strip()
+    data = json.loads(clean)
+
+    print(f"\n📊 BIAS SCORE: {data['bias_score']}/100")
+    print("\n🚩 FLAGGED PHRASES:")
+    for f in data['flagged_phrases']:
+        print(f"   • '{f['phrase']}' → {f['replacement']}")
+        print(f"     Why: {f['reason']}")
+    print("\n✅ REWRITTEN JD:")
+    print(data['rewritten_jd'])
+
     save_output("bias_scan", {
         "original_jd": job_description,
-        "analysis": result,
+        "analysis": data,
         "timestamp": str(datetime.now())
     })
 
@@ -132,7 +171,7 @@ def match_score():
             Candidate has {score}% match with this job.
             Candidate profile: {candidate_profile}
             Job: {job_description}
-            In 3-4 sentences explain why this is a {match_level} 
+            In 3-4 sentences explain why this is a {match_level}
             and give one practical recommendation.
             """
         }]
@@ -140,6 +179,7 @@ def match_score():
 
     explanation = response.choices[0].message.content
     print(explanation)
+
     save_output("match_score", {
         "candidate_profile": candidate_profile,
         "job_description": job_description,
@@ -149,19 +189,85 @@ def match_score():
         "timestamp": str(datetime.now())
     })
 
+def persona_generator():
+    print("\n=== Neurodivergent Candidate Persona Generator ===\n")
+    print("Answer these questions:\n")
+    name = input("Your name (or anonymous): ")
+    q1 = input("1. How do you work best? ")
+    q2 = input("2. What environment helps you focus? ")
+    q3 = input("3. What are your biggest strengths? ")
+    q4 = input("4. What challenges do you face at work? ")
+    q5 = input("5. What accommodations help you most? ")
+
+    response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[{
+            "role": "user",
+            "content": f"""
+            Based on these answers, generate a professional neurodivergent 
+            candidate persona profile that this person can share with employers.
+            
+            Answers: 
+            Works best: {q1}
+            Environment: {q2}
+            Strengths: {q3}
+            Challenges: {q4}
+            Accommodations: {q5}
+            
+            Return ONLY a JSON object:
+            {{
+                "persona_name": "professional label for their work style",
+                "cognitive_strengths": ["strength 1", "strength 2", "strength 3"],
+                "ideal_environment": "description of best work environment",
+                "growth_areas": ["area 1", "area 2"],
+                "accommodation_requests": ["request 1", "request 2", "request 3"],
+                "best_role_types": ["role type 1", "role type 2", "role type 3"],
+                "employer_message": "a short professional message this candidate can share with employers"
+            }}
+            """
+        }]
+    )
+
+    raw = response.choices[0].message.content
+    clean = raw.replace("```json", "").replace("```", "").strip()
+    data = json.loads(clean)
+
+    print(f"\n🧠 PERSONA: {data['persona_name']}")
+    print("\n💪 COGNITIVE STRENGTHS:")
+    for s in data['cognitive_strengths']:
+        print(f"   • {s}")
+    print(f"\n🏢 IDEAL ENVIRONMENT: {data['ideal_environment']}")
+    print("\n📈 GROWTH AREAS:")
+    for g in data['growth_areas']:
+        print(f"   • {g}")
+    print("\n🤝 ACCOMMODATION REQUESTS:")
+    for a in data['accommodation_requests']:
+        print(f"   • {a}")
+    print("\n💼 BEST ROLE TYPES:")
+    for r in data['best_role_types']:
+        print(f"   • {r}")
+    print(f"\n📝 EMPLOYER MESSAGE:\n   {data['employer_message']}")
+
+    save_output("persona", {
+        "name": name,
+        "persona": data,
+        "timestamp": str(datetime.now())
+    })
+
 # MAIN MENU
 while True:
     print("\n" + "="*40)
     print("   🧠 CogniMatch AI Engine")
     print("="*40)
-    print("1. Generate Culture Intelligence Report")
-    print("2. Scan Job Description for Bias")
-    print("3. Get Working Style Match Score")
-    print("4. Exit")
+    print("1. Culture Intelligence Report")
+    print("2. JD Bias Scanner")
+    print("3. Working Style Match Score")
+    print("4. Candidate Persona Generator")
+    print("5. Exit")
     print("="*40)
-    
-    choice = input("Choose (1/2/3/4): ")
-    
+
+    choice = input("Choose (1/2/3/4/5): ")
+
     if choice == "1":
         culture_report()
     elif choice == "2":
@@ -169,7 +275,9 @@ while True:
     elif choice == "3":
         match_score()
     elif choice == "4":
+        persona_generator()
+    elif choice == "5":
         print("\nGoodbye! 👋")
         break
     else:
-        print("Invalid choice. Please enter 1, 2, 3 or 4.")
+        print("Invalid choice. Please enter 1, 2, 3, 4 or 5.")
