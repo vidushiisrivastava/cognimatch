@@ -5,7 +5,7 @@
 ---
 
 ## 🚀 What is CogniMatch?
-Hiring systems today accidentally filter out neurodivergent talent through biased language, sensory-unfriendly environments, and style mismatches. CogniMatch uses AI to fix that — matching candidates on **working style** not just resume keywords.
+Hiring systems today accidentally filter out neurodivergent talent through biased language, sensory-unfriendly environments, and style mismatches. CogniMatch uses AI to fix that, matching candidates on **working style** not just resume keywords.
 
 ---
 
