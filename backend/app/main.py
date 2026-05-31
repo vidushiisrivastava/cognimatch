@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import Base, engine
-from app.routes import auth, candidate, company, match
+from app.routes import auth, candidate, company, match,api
 
 Base.metadata.create_all(bind=engine)
 
@@ -19,6 +19,7 @@ app.include_router(auth.router)
 app.include_router(candidate.router)
 app.include_router(company.router)
 app.include_router(match.router)
+app.include_router(api.router)
 
 @app.get("/")
 def home():
