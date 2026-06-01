@@ -1,4 +1,3 @@
-
 import os
 import json
 from groq import Groq
@@ -115,7 +114,14 @@ def generate_culture_report(company_description: str) -> dict:
         messages=[{"role": "user", "content": prompt}]
     )
 
+    # raw = response.choices[0].message.content
+    # clean = raw.replace("```json", "").replace("```", "").strip()
+    # return json.loads(clean)
     raw = response.choices[0].message.content
+
+    print("\n===== RAW CULTURE RESPONSE =====")
+    print(raw)
+    print("================================\n")
     clean = raw.replace("```json", "").replace("```", "").strip()
     return json.loads(clean)
 
