@@ -76,5 +76,12 @@ Every feature auto-saves a timestamped JSON file consumed by the backend:
 
 ---
 
-## 👩‍💻 Built by
-**Vidushi Srivastava** 
+## 👩‍💻 Built by Team InnovHer — LinkedIn Hackathon 2026
+
+| Name | Role |
+|------|------|
+| Vidushi Srivastava | AI/ML |
+| Divisha Panjwani | Backend |
+| Riya Umesh Singh | Frontend |
+| Apekshita Chauhan | Database |
+| Stuti Agarwal | Product + Testing | 
