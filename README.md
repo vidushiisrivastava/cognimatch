@@ -1,14 +1,16 @@
 <div align="center">
 
-# 🧠 CogniMatch
+# CogniMatch
 
 ### AI-Powered Inclusive Hiring for Neurodivergent Talent
 
 *Built at **LinkedIn Hackathon 2026** by Team InnovHer*
 
 [![Python](https://img.shields.io/badge/Python-3.13-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org)
+[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
 [![Groq](https://img.shields.io/badge/Groq-LLaMA_3.3_70B-F55036?style=for-the-badge)](https://groq.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
 </div>
 
@@ -70,14 +72,39 @@ Builds a shareable neurodivergent professional profile to help candidates advoca
 
 ## 🛠️ Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| **Language** | Python 3.13 |
-| **LLM** | Groq API — LLaMA 3.3 70B |
+### 🤖 AI / ML
+| Component | Technology |
+|-----------|-----------|
+| **LLM** | LLaMA 3.3 70B via Groq API |
 | **Embeddings** | Sentence Transformers (`all-MiniLM-L6-v2`) |
-| **Similarity** | Cosine similarity (vector-based matching) |
-| **Output Format** | Structured JSON (timestamped, backend-ready) |
-| **Config** | `python-dotenv` |
+| **Similarity** | Cosine Similarity (vector-based matching) |
+| **Output** | Structured JSON via Prompt Engineering |
+| **Use Cases** | Candidate matching, bias detection, report generation |
+
+### ⚙️ Backend
+| Component | Technology |
+|-----------|-----------|
+| **Language** | Python 3.13 |
+| **Framework** | FastAPI + Uvicorn |
+| **ORM** | SQLAlchemy |
+| **Database** | PostgreSQL |
+| **Auth** | JWT + bcrypt |
+| **Validation** | Pydantic |
+
+### 🎨 Frontend
+| Component | Technology |
+|-----------|-----------|
+| **Framework** | Next.js + React |
+| **Language** | TypeScript |
+| **Styling** | Tailwind CSS |
+
+### 🗄️ Database
+| Component | Technology |
+|-----------|-----------|
+| **Platform** | Supabase (PostgreSQL) |
+| **Client** | supabase-py |
+| **Vector Search** | pgvector (embedding-based similarity) |
+| **Config** | python-dotenv |
 
 ---
 
@@ -86,6 +113,7 @@ Builds a shareable neurodivergent professional profile to help candidates advoca
 - **LLM Prompting** — structured JSON extraction from natural language responses
 - **Vector Embeddings** — semantic understanding of working style beyond surface keywords
 - **Cosine Similarity** — mathematical compatibility scoring between candidate and job
+- **pgvector** — database-level embedding search for scalable similarity queries
 
 ---
 
@@ -144,11 +172,9 @@ python report.py           # Culture intelligence report
 
 ## 👩‍💻 Team InnovHer
 
-Built with 💜 at **LinkedIn Hackathon 2026**
-
 | Name | Role |
 |------|------|
-| [Vidushi Srivastava](https://github.com/vidushiisrivastava) | AI / ML |
+| Vidushi Srivastava | AI / ML |
 | Divisha Panjwani | Backend |
 | Riya Umesh Singh | Frontend |
 | Apekshita Chauhan | Database |
@@ -158,7 +184,7 @@ Built with 💜 at **LinkedIn Hackathon 2026**
 
 ## 💡 Why This Matters
 
-> ~15–20% of the global population is neurodivergent — including people with ADHD, autism, dyslexia, and more. Many are filtered out of hiring pipelines not because of capability, but because the system wasn't designed for them.
+> ~15–20% of the global population is neurodivergent, including people with ADHD, autism, dyslexia, and more. Many are filtered out of hiring pipelines not because of capability, but because the system wasn't designed for them.
 >
 > CogniMatch doesn't just optimize for efficiency. It optimizes for **equity**.
 
@@ -166,6 +192,6 @@ Built with 💜 at **LinkedIn Hackathon 2026**
 
 <div align="center">
 
-Made with 💜 by Team InnovHer &nbsp;|&nbsp; LinkedIn Hackathon 2026
+Made by Team InnovHer &nbsp;|&nbsp; LinkedIn Hackathon 2026
 
 </div>
